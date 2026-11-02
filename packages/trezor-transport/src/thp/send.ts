@@ -1,5 +1,6 @@
 import { thp as protocolThp, v2 as protocolV2 } from '@exodus/trezor-protocol';
-import { scheduleAction } from '@exodus/trezor-utils';
+
+import { scheduleAction } from '@trezor/utils';
 
 import type { ReceiveThpMessageProps } from './receive';
 import { readWithExpectedHeaders } from '../utils/readWithExpectedHeaders';

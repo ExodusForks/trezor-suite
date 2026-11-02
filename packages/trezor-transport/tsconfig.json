@@ -7,7 +7,6 @@
     "references": [
         { "path": "../trezor-protobuf" },
         { "path": "../trezor-protocol" },
-        { "path": "../trezor-utils" },
         { "path": "../eslint" },
         { "path": "../trezor-user-env-link" }
     ]

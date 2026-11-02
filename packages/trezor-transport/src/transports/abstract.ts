@@ -1,11 +1,7 @@
 import { loadDefinitions, parseConfigure, protobuf } from '@exodus/trezor-protobuf';
 import { PROTOCOL_MALFORMED, ThpState, TransportProtocol } from '@exodus/trezor-protocol';
-import {
-    ScheduleActionParams,
-    ScheduledAction,
-    TypedEmitter,
-    scheduleAction,
-} from '@exodus/trezor-utils';
+
+import { ScheduleActionParams, ScheduledAction, TypedEmitter, scheduleAction } from '@trezor/utils';
 
 import type { BridgeCommonErrors } from './bridge';
 import { ACTION_TIMEOUT, TRANSPORT } from '../constants';
