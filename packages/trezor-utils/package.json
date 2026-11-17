@@ -31,6 +31,9 @@
         "prepublishOnly": "yarn tsx ../../scripts/prepublishNPM.js",
         "prepublish": "yarn tsx ../../scripts/prepublish.js"
     },
+    "dependencies": {
+        "events": "^3.3.0"
+    },
     "peerDependencies": {
         "tslib": "^2.6.2"
     },

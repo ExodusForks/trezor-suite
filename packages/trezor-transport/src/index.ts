@@ -26,10 +26,12 @@ export { Messages } from '@exodus/trezor-protobuf';
 export { BridgeTransport } from './transports/bridge';
 
 // browser (chrome-like) only
-export { WebUsbTransport } from './transports/webusb';
+export { WebUsbTransport } from './transports/webusb.browser';
 
-// node only
+// Shared by WebUSB and native transports.
 export { SessionsBackground } from './sessions/background';
 export { SessionsClient } from './sessions/client';
 
-export { UdpTransport } from './transports/udp';
+// Keep the default entry usable without Node builtins. Emulator clients can import
+// the Node implementation directly from lib/transports/udp.
+export { UdpTransport } from './transports/udp.browser';
