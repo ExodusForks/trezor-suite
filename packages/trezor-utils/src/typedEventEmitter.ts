@@ -8,7 +8,9 @@ type EventMap = {
     [type: `dynamic/${string}`]: boolean;
 };
 */
-import { EventEmitter } from 'events';
+// Use the npm implementation in unbundled Electron renderers as well as browser builds.
+// Keep Node's declarations: the events package does not ship TypeScript types.
+const { EventEmitter }: typeof import('events') = require('events/events.js');
 
 type EventMap = Record<string, any>;
 type EventKey<T extends EventMap> = string & keyof T;

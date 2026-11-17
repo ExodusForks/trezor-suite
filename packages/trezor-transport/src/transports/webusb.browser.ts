@@ -3,13 +3,10 @@ import { AbstractApiTransport } from './abstractApi';
 import { UsbApi } from '../api/usb';
 import { BrowserSessionsBackground } from '../sessions/background-browser';
 
-const defaultSessionsBackgroundUrl =
-    window.location.origin +
-    `${process.env.ASSET_PREFIX || ''}/workers/sessions-background-sharedworker.js`
-        // just in case so that whoever defines ASSET_PREFIX does not need to worry about trailing slashes
-        .replace(/\/+/g, '/');
-
-type WebUsbTransportParams = AbstractTransportParams & { sessionsBackgroundUrl?: string };
+type WebUsbTransportParams = AbstractTransportParams & {
+    /** Opt in to cross-tab sessions by supplying the URL of a deployed SharedWorker. */
+    sessionsBackgroundUrl?: string;
+};
 
 /**
  * WebUsbTransport
@@ -28,10 +25,14 @@ export class WebUsbTransport extends AbstractApiTransport {
             logger,
             ...rest,
         });
-        this.sessionsBackgroundUrl = sessionsBackgroundUrl ?? defaultSessionsBackgroundUrl;
+        this.sessionsBackgroundUrl = sessionsBackgroundUrl;
     }
 
     private async trySetSessionsBackground() {
+        // AbstractApiTransport already provides local sessions. Desktop and native
+        // consumers do not necessarily ship the worker used by Trezor Suite.
+        if (!this.sessionsBackgroundUrl) return;
+
         try {
             const response = await fetch(this.sessionsBackgroundUrl, { method: 'HEAD' });
             if (!response.ok) {

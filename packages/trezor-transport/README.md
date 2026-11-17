@@ -16,6 +16,29 @@ _You probably don't want to use this package directly._ For communication with T
     - Trezor Bridge
     - WebUSB
 
+## Environments and sessions
+
+Unbundled Electron renderers can explicitly import the browser entry:
+
+```ts
+import { BridgeTransport, WebUsbTransport } from '@exodus/trezor-transport/lib/index.browser';
+```
+
+This entry provides WebUSB, Bridge, and the shared transport APIs without loading Node's
+UDP implementation. Its `UdpTransport` export is an unsupported-environment stub. Use
+this entry consistently for runtime transport imports in renderers that do not apply
+package `browser` mappings.
+
+The package root retains its existing environment resolution: Node exports the real
+`UdpTransport`, browser bundlers apply the `browser` mappings, and React Native applies
+the existing native mappings. Native USB and Bluetooth use the shared transport APIs
+from the package root.
+
+WebUSB uses local sessions by default. To coordinate sessions across browser tabs, deploy
+the sessions SharedWorker and pass its URL as `sessionsBackgroundUrl` when constructing
+`WebUsbTransport`. The transport does not probe for a worker when this option is omitted.
+If an explicitly configured worker cannot be loaded, it falls back to local sessions.
+
 ## Publishing
 
 This package is published to npm registry because it is a dependency of [@trezor/connect](https://github.com/trezor/trezor-suite/issues/5440) which can be installed as a standalone package.
