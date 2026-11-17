@@ -1,37 +1,4 @@
-export * as TRANSPORT_ERROR from './errors';
-export * as ERRORS from './errors';
+export * from './index.shared';
 
-export type {
-    Descriptor,
-    Session,
-    MessageResponse,
-    AsyncResultWithTypedError,
-    DescriptorApiLevel,
-    PathInternal,
-} from './types';
-export { TREZOR_USB_DESCRIPTORS, TRANSPORT } from './constants';
-
-export { AbstractTransport as Transport, isTransportInstance } from './transports/abstract';
-export { AbstractApiTransport } from './transports/abstractApi';
-export { AbstractApi, DEVICE_TYPE } from './api/abstract';
-export type { AbstractApiConstructorParams, OpenDeviceChannel } from './api/abstract';
-export { UsbApi } from './api/usb';
-export { readMessageBuffer } from './utils/readMessageBuffer';
-
-// messages are exported but there is no real need to use them elsewhere
-// transports have reference to this already
-export { Messages } from '@exodus/trezor-protobuf';
-
-// browser + node
-export { BridgeTransport } from './transports/bridge';
-
-// browser (chrome-like) only
-export { WebUsbTransport } from './transports/webusb.browser';
-
-// Shared by WebUSB and native transports.
-export { SessionsBackground } from './sessions/background';
-export { SessionsClient } from './sessions/client';
-
-// Keep the default entry usable without Node builtins. Emulator clients can import
-// the Node implementation directly from lib/transports/udp.
-export { UdpTransport } from './transports/udp.browser';
+export { WebUsbTransport } from './transports/webusb';
+export { UdpTransport } from './transports/udp';

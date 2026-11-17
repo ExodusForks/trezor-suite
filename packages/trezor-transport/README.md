@@ -18,11 +18,21 @@ _You probably don't want to use this package directly._ For communication with T
 
 ## Environments and sessions
 
-The default entry exports WebUSB and Bridge implementations that can also be loaded by
-an unbundled Electron renderer. It does not load Node's UDP implementation. Node emulator
-clients that need UDP should import `UdpTransport` from
-`@exodus/trezor-transport/lib/transports/udp`. React Native continues to use the WebUSB stub;
-native USB and Bluetooth implementations can use the shared transport base classes.
+Unbundled Electron renderers can explicitly import the browser entry:
+
+```ts
+import { BridgeTransport, WebUsbTransport } from '@exodus/trezor-transport/lib/index.browser';
+```
+
+This entry provides WebUSB, Bridge, and the shared transport APIs without loading Node's
+UDP implementation. Its `UdpTransport` export is an unsupported-environment stub. Use
+this entry consistently for runtime transport imports in renderers that do not apply
+package `browser` mappings.
+
+The package root retains its existing environment resolution: Node exports the real
+`UdpTransport`, browser bundlers apply the `browser` mappings, and React Native applies
+the existing native mappings. Native USB and Bluetooth use the shared transport APIs
+from the package root.
 
 WebUSB uses local sessions by default. To coordinate sessions across browser tabs, deploy
 the sessions SharedWorker and pass its URL as `sessionsBackgroundUrl` when constructing

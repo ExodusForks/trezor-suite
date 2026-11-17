@@ -1,4 +1,4 @@
-// Loading the public entry must not require Node-only modules in desktop dev mode.
+// Loading the explicit browser entry must not require Node-only modules in desktop dev mode.
 jest.mock('events', () => {
     throw new Error('Node events is unavailable in the renderer');
 });
@@ -7,12 +7,16 @@ jest.mock('dgram', () => {
 });
 jest.mock('@exodus/fetch', () => ({ fetch: jest.fn() }));
 
-import { AbstractApiTransport, BridgeTransport, UdpTransport, WebUsbTransport } from '../src';
 import { WRONG_ENVIRONMENT } from '../src/errors';
+import {
+    AbstractApiTransport,
+    BridgeTransport,
+    UdpTransport,
+    WebUsbTransport,
+} from '../src/index.browser';
 import { ping } from '../src/pinger/ping.browser';
 
-// This test environment has no window; importing the entry must still work for
-// native consumers of the shared classes.
+// Importing the browser entry must not access window before a transport is created.
 describe('browser-safe entry', () => {
     const originalNavigator = Object.getOwnPropertyDescriptor(globalThis, 'navigator');
     const originalFetch = globalThis.fetch;
